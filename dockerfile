@@ -58,11 +58,11 @@ ARG PATCH_CHIAPOS
 COPY . /machinaris/
 
 # set workdir
-WORKDIR /chia-blockchain
+WORKDIR /flax-blockchain
 
-# install Chia using official Chia Blockchain binaries
+# install Flax using official Flax Blockchain binaries
 RUN \
-	git clone --branch ${CHIA_BRANCH}  --single-branch https://github.com/Chia-Network/chia-blockchain.git /chia-blockchain \
+	git clone --branch ${CHIA_BRANCH} https://github.com/Flax-Network/flax-blockchain.git --single-branch  /flax-blockchain \
 	&& git submodule update --init mozilla-ca \
 	&& chmod +x install.sh \
 	&& /usr/bin/sh ./install.sh \
@@ -77,9 +77,9 @@ RUN \
 # install additional tools such as Plotman, Chiadog, and Machinaris
 RUN \
        /usr/bin/bash /machinaris/scripts/patch_chiapos.sh ${PATCH_CHIAPOS} \
-	&& . /machinaris/scripts/chiadog_install.sh \
-	&& . /machinaris/scripts/plotman_install.sh \
-	&& . /machinaris/scripts/madmax_install.sh \
+	# && . /machinaris/scripts/chiadog_install.sh \
+	# && . /machinaris/scripts/plotman_install.sh \
+	# && . /machinaris/scripts/madmax_install.sh \
 	&& . /machinaris/scripts/machinaris_install.sh \
 	\
 # cleanup apt and pip caches
@@ -91,7 +91,7 @@ RUN \
 		/var/tmp/*
 
 # Provide a colon-separated list of in-container paths to your mnemonic keys
-ENV keys="/root/.chia/mnemonic.txt"  
+ENV keys="/root/.flax/mnemonic.txt"
 # Provide a colon-separated list of in-container paths to your completed plots
 ENV plots_dir="/plots"
 # One of fullnode, farmer, harvester, plotter, farmer+plotter, harvester+plotter. Default is fullnode
@@ -105,14 +105,14 @@ ENV farmer_port="8447"
 # Only set true if using Chia's old test for testing only, default uses mainnet
 ENV testnet="false"
 # Can override the location of default settings for api and web servers.
-ENV API_SETTINGS_FILE='/root/.chia/machinaris/config/api.cfg'
-ENV WEB_SETTINGS_FILE='/root/.chia/machinaris/config/web.cfg'
+ENV API_SETTINGS_FILE='/root/.flax/machinaris/config/api.cfg'
+ENV WEB_SETTINGS_FILE='/root/.flax/machinaris/config/web.cfg'
 # Local network hostname of a Machinaris controller - localhost when standalone
 ENV controller_host="localhost"
 ENV controller_web_port=8926
 ENV controller_api_port=8927
 
-ENV PATH="${PATH}:/chia-blockchain/venv/bin"
+ENV PATH="${PATH}:/flax-blockchain/venv/bin"
 ENV TZ=Etc/UTC
 ENV FLASK_ENV=production
 ENV FLASK_APP=/machinaris/main.py
@@ -122,10 +122,14 @@ ENV AUTO_PLOT=false
 VOLUME [ "/id_rsa" ]
 
 # ports
+# RPC comm port
 EXPOSE 8555
-EXPOSE 8444
+# EXPOSE 8444
+# main flax communication port
+EXPOSE 6888
+# control ports
 EXPOSE 8926
 EXPOSE 8927
 
-WORKDIR /chia-blockchain
+WORKDIR /flax-blockchain
 ENTRYPOINT ["bash", "./entrypoint.sh"]
