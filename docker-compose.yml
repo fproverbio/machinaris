@@ -9,7 +9,7 @@ version: '3.8'
 #
 
 machinaris:
-    container_name: machinaris
+    container_name: machinaris-flax
     image: ghcr.io/guydavis/machinaris
     hostname: YOUR_HOST_COMPUTERS_HOSTNAME
     restart: always
@@ -27,7 +27,7 @@ machinaris:
     # 
     volumes:
     # Path to Machinaris application storage (host_path:container_path)
-        - "~/.machinaris:/root/.chia:rw"
+        - "~/.machinaris:/root/.flax:rw"
     #
     # Path to your completed plots. 
         - "/PATH/TO/PLOTS:/plots:rw"
@@ -44,7 +44,7 @@ machinaris:
     #
     environment:
     # Local timezone, use 'TZ database name' from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
-        - TZ=America/Edmonton
+        - TZ=Europe/Rome
     #
     # More than one plots folder above? See: https://github.com/guydavis/machinaris/wiki/FAQ#can-i-use-two-or-more-final-destination-directories-to-hold-my-plots
     #    - plots_dir=/plots1:/plots2:/plots3
@@ -75,7 +75,7 @@ machinaris:
     resources:
     limits:
         cpus: '4'
-        memory: 8G
+        memory: 4G
     reservations:
         cpus: '1'
         memory: 2G
