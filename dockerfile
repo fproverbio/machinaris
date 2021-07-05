@@ -116,14 +116,19 @@ ENV PATH="${PATH}:/flax-blockchain/venv/bin"
 ENV TZ=Etc/UTC
 ENV FLASK_ENV=production
 ENV FLASK_APP=/machinaris/main.py
-ENV XDG_CONFIG_HOME=/root/.chia
+ENV XDG_CONFIG_HOME=/root/.flax
 ENV AUTO_PLOT=false
 
 VOLUME [ "/id_rsa" ]
 
-# ports
 # RPC comm port
-EXPOSE 8555
+# EXPOSE 8555
+# full node
+EXPOSE 6755
+# harvester
+EXPOSE 6760
+# wallet
+EXPOSE 6761
 # EXPOSE 8444
 # main flax communication port
 EXPOSE 6888
